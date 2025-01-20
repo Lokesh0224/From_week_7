@@ -3,9 +3,9 @@ const {UserModel, TodoModel}=require("./db")
 const jwt= require("jsonwebtoken")
 const mongoose= require("mongoose")
 const JWT_SECRET="lokeshlove"
+const bcrypt= require("bcrypt")
 
-
-mongoose.connect("mongodb+srv://Lokesh0224:76MOX404UFEMMw0P@cluster0.kjsdz.mongodb.net/todo_app333")
+mongoose.connect("mongodb+srv://Lokesh0224:76MOX404UFEMMw0P@cluster0.kjsdz.mongodb.net/todos-app-week-7-2")
 const app= express()
 app.use(express.json());
 
@@ -14,15 +14,29 @@ app.post("/signup", async (req, res)=>{//we're using async await because the dat
     const password= req.body.password
     const name= req.body.name
 
-    await UserModel.create({
-        email:email, 
-        password: password, 
-        name: name
-    })
+    let errorThrown=false;
+    try{
+        const hashPassword= await bcrypt.hash(password, 5)//synatx for hash is bcrypt.hash(myPlaintextPassword, slatRound, function(err, hash){})
+        console.log(hashPassword)
 
-    res.json({
-        message:"You are logged in"
-    })
+        await UserModel.create({//this will throw an error if the constrain is not satisfied means if the email is not uniquie then it will throw an error
+            email:email, 
+            password: hashPassword, 
+            name: name
+        })
+    }
+    catch(e){    
+        console.log("Error while putting in the db")
+        res.json({
+            message:"Username already exists"
+        })
+        errorThrown=true
+    }
+    if(!errorThrown){
+        res.json({
+            message:"You are logged in"
+        })
+    }
 })
 
 app.post("/signin", async (req, res)=>{
@@ -30,13 +44,19 @@ app.post("/signin", async (req, res)=>{
     const password= req.body.password
 
     const user=await UserModel.findOne({//this is also a database call so we're using async and await
-        email:email, 
-        password:password
-    })
+        email:email
+     })
 
-    console.log(user)
-
-    if(user){
+    if(!user){
+        res.status(403).json({
+            message:"User doesn't exist in our db"
+        })
+        return 
+    }
+    
+    const passwordMatch=await bcrypt.compare(password, user.password)//(password) is the password the user has sent in the sign-in end point, and (user.password)is the hashed password that is stored in the db
+    //this compare function will decode the hashed password that is it will get the salt and the users plaintext password
+    if(passwordMatch){
         const token=jwt.sign({
             id:user._id.toString()
         }, JWT_SECRET)
@@ -48,6 +68,7 @@ app.post("/signin", async (req, res)=>{
     
     else{
         res.status(403).json({message:"Incorrect credentials"})
+        return 
     }
 })
 
