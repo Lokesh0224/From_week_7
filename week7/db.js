@@ -1,5 +1,5 @@
 const mongoose=require("mongoose")
-const Schema= mongoose.Schema;
+const Schema= mongoose.Schema;//Schema is a part of mongoose library which will allow us to deifne the structure of the data
 const ObjectId= mongoose.ObjectId
 
 
