@@ -1,37 +1,15 @@
 const express = require("express")
+const {userRouter}= require("./routes/user")
+const {courseRouter}=require("./routes/course")
 const jwt = require("jsonwebtoken")
+const { userRouter } = require("./routes/user")
 
 const app = express()
 
-app.post("/user/signup", (req, res)=>{//signup
-    res.json({
-        message:"You're signed up"
-    })
-})
+app.use("/user", userRouter)
+app.use("/course", courseRouter)
 
-app.post("/user/signin", (req, res)=>{//signin
-    res.json({
-        message:"You're signed in"
-    })
-})
 
-app.get("/user/purchases", (req, res)=>{//user purchased courses
-    res.json({
-        message:""
-    })
-})
-
-app.get("/user/courses", (req, res)=>{//available courses
-    res.json({
-        message:""
-    })
-})
-
-app.post("/course/purchase", (req, res)=>{//when the user wants to purchase a course
-    res.json({
-        message:""
-    })
-})
 
 
 app.listen(3000, ()=>(
