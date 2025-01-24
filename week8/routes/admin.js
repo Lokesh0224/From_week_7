@@ -14,19 +14,19 @@ adminRouter.post("/signin", (req, res)=>{//signin
     })
 })
 
-adminRouter.post("/", (req, res)=>{//admin course creation
+adminRouter.post("/course", (req, res)=>{//admin course creation
     res.json({
         message:""
     })
 })
 
-adminRouter.get("/", (req, res)=>{
+adminRouter.get("/course", (req, res)=>{
     res.json({
         message:""
     })
 })
 
-adminRouter.get("/bulk", (req, res)=>{//show the admin created courses
+adminRouter.get("/course/bulk", (req, res)=>{//show the admin created courses
     res.json({
         message:""
     })
