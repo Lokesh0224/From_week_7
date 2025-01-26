@@ -1,10 +1,11 @@
 const {Router}= require("express")
 const adminRouter= Router()
-const {adminModel}= require("../db")
+const {adminModel, courseModel}= require("../db")
 const z= require("zod")
 const bcrypt= require("bcrypt")
 const jwt= require("jsonwebtoken")
-const JWT_ADMIN_PASSWORD="adminlove"
+const { JWT_ADMIN_PASSWORD}= require("../config")
+const { adminMiddleware } = require("../middleware/admin")
 
 adminRouter.post("/signup", async (req, res)=>{//signup
     try{
@@ -83,10 +84,27 @@ adminRouter.post("/signin", async (req, res)=>{//signin
 
 })
 
-adminRouter.post("/course", (req, res)=>{//admin course creation
-    res.json({
-        message:""
+adminRouter.post("/course", adminMiddleware,async (req, res)=>{//admin course creation
+    const adminId= req.adminId
+
+    const { title, description, price, imageUrl, creatorId} = req. body
+
+    //watch creating a web3 saas in 6 hours, don't forget, harkirat's youtube channel
+    const course = await courseModel.create({
+        title: title,
+        description: description, 
+        price: price, 
+        imageUrl: imageUrl, 
+        creatorId: creatorId
+        
     })
+
+    res.json({
+        message: "Course created", 
+        courseId: course._id
+    })
+
+
 })
 
 adminRouter.get("/course", (req, res)=>{
