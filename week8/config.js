@@ -1,5 +1,5 @@
-const JWT_USER_PASSWORD ="lokeshlove01"
-const JWT_ADMIN_PASSWORD="adminlove" //admin and user jwt password should be distinguised 
+const JWT_USER_PASSWORD =process.env.JWT_USER_PASSWORD
+const JWT_ADMIN_PASSWORD=process.env.JWT_ADMIN_PASSWORD //admin and user jwt password should be distinguised 
 
 
 module.exports= {

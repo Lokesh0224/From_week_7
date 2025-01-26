@@ -1,3 +1,5 @@
+require('dotenv').config()
+console.log(process.env.MONGO_URL)
 const express = require("express")
 const {userRouter}= require("./routes/user")
 const {courseRouter}=require("./routes/course")
@@ -17,7 +19,7 @@ app.use("/api/v1/course", courseRouter)
 
 
 async function main(){
-    await mongoose.connect("mongodb+srv://Lokesh0224:76MOX404UFEMMw0P@cluster0.kjsdz.mongodb.net/test5")
+    await mongoose.connect(process.env.MONGO_URL)
 //study dotenv
     app.listen(3000, ()=>(
         console.log("Port is in localhost 3000")

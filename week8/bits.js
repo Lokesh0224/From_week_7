@@ -17,3 +17,8 @@
     [nodemon] starting `node index.js`
     Port is in localhost 3000
     */
+//first create a .gitignore file, then create a .env file. Now type .env inside the .gitignore file so that file will be ignored 
+    //.env file means you can keep jwt keys or mongodb url it will be in the file but even if you push it in github it wont get pushed
+    //in the place of mongodb connect paste this one, process.env.MONGO_URL
+    //npm install dotenv
+    //.env.example is for sample url or passwor
