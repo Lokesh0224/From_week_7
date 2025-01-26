@@ -87,7 +87,7 @@ adminRouter.post("/signin", async (req, res)=>{//signin
 adminRouter.post("/course", adminMiddleware,async (req, res)=>{//admin course creation
     const adminId= req.adminId
 
-    const { title, description, price, imageUrl, creatorId} = req. body
+    const { title, description, price, imageUrl} = req. body
 
     //watch creating a web3 saas in 6 hours, don't forget, harkirat's youtube channel
     const course = await courseModel.create({
@@ -95,7 +95,7 @@ adminRouter.post("/course", adminMiddleware,async (req, res)=>{//admin course cr
         description: description, 
         price: price, 
         imageUrl: imageUrl, 
-        creatorId: creatorId
+        creatorId: adminId
         
     })
 
@@ -107,17 +107,39 @@ adminRouter.post("/course", adminMiddleware,async (req, res)=>{//admin course cr
 
 })
 
-adminRouter.get("/course", (req, res)=>{
+adminRouter.put("/course",adminMiddleware ,async (req, res)=>{//if the admin want to edit the course
+    const  adminId= req.adminId
+    const { title, description, imageUrl, price, courseId }= req.body
+
+    const course= await courseModel.updateOne(
+        { _id: courseId, //the id of the course which is needed to be updated, there will be multiple courses so this id is for the course that needed an update
+          creatorId: adminId//the id of the creator who wants to change the course price or title etc...,  there will be many course creator so the one of the creator who wants to update the course and this is his id
+        }, {
+        title: title, 
+        description: description, 
+        imageUrl: imageUrl, 
+        price: price
+    })
+    
     res.json({
-        message:""
+        message:"Course updated", 
+        courseId: course._id
     })
 })
 
-adminRouter.get("/course/bulk", (req, res)=>{//show the admin created courses
+adminRouter.get("/course/bulk", adminMiddleware, async( req, res)=>{//show all courses the admin has created 
+    const adminId= req.adminId
+    const courses= await courseModel.find({
+        creatorId: adminId
+    })
+    
     res.json({
-        message:""
+        message:"All courses", 
+        courses
     })
 })
+
+
 
 module.exports={
     adminRouter:adminRouter
