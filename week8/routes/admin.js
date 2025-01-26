@@ -1,17 +1,86 @@
 const {Router}= require("express")
 const adminRouter= Router()
 const {adminModel}= require("../db")
+const z= require("zod")
+const bcrypt= require("bcrypt")
+const jwt= require("jsonwebtoken")
+const JWT_ADMIN_PASSWORD="adminlove"
 
-adminRouter.post("/signup", (req, res)=>{//signup
-    res.json({
-        message:"You're signed up"
-    })
+adminRouter.post("/signup", async (req, res)=>{//signup
+    try{
+        const requireBody= z.object({
+            email: z.string().email().min(6).max(30),
+            password: z.string().min(8).max(30),
+            firstName: z.string().max(30),
+            lastName: z.string().max(30)
+        })
+        const parsedData= requireBody.safeParse(req.body)
+
+        if(!parsedData.success){
+            res.json({
+                message:"Incorrect format",
+                error: parsedData.error
+            })
+            return 
+        }
+
+        const {email, password, firstName, lastName}= req.body
+
+        const hashedPassword= await bcrypt.hash(password, 7)
+        console.log(hashedPassword)
+
+        await adminModel.create({
+            email: email, 
+            password: hashedPassword, 
+            firstName: firstName, 
+            lastName: lastName
+        })
+
+        res.json({
+            messagae: "Admin Signup successful"
+        })        
+
+    }
+    catch(e){
+        console.error("Error during signup", e)
+
+        res.status(500).json({
+            message:"You're signed in",
+            error:e.message
+        })
+    }
 })
 
-adminRouter.post("/signin", (req, res)=>{//signin
-    res.json({
-        message:"You're signed in"
+adminRouter.post("/signin", async (req, res)=>{//signin
+    const {email, password}= req.body
+
+    const admin= await adminModel.findOne({
+        email:email
     })
+    if(!admin){
+        res.status(403).json({
+            message: "Admin is not found"
+        })
+        return
+    }
+    const passwordMatch= await bcrypt.compare(password, admin.password)
+    if(passwordMatch){
+        const token= jwt.sign({
+            id: admin._id
+        }, JWT_ADMIN_PASSWORD)
+
+        res.json({
+            message:"Signup successful",
+            token: token
+        })
+    }
+    else{
+        res.json({
+            message: "Incorrect creadentials"
+        })
+    }
+    
+
 })
 
 adminRouter.post("/course", (req, res)=>{//admin course creation

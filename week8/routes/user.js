@@ -6,6 +6,8 @@ const userRouter = Router()
 const{userModel}= require("../db")
 const z = require("zod")
 const bcrypt= require("bcrypt")
+const jwt= require("jsonwebtoken")
+const JWT_USER_PASSWORD ="lokeshlove01"
 
 
 userRouter.post("/signup", async(req, res)=>{//signup
@@ -13,8 +15,8 @@ userRouter.post("/signup", async(req, res)=>{//signup
         const requireBody= z.object({
             email: z.string().email().min(5).max(50),
             password:z.string().min(8).max(30),
-            firstName: z.string().min(5).max(40),
-            lastName: string().min(5).max(6)
+            firstName: z.string().max(40),
+            lastName: z.string().max(40)
         })
         
         const parsedDataWithSuccess= requireBody.safeParse(req.body)
@@ -38,7 +40,7 @@ userRouter.post("/signup", async(req, res)=>{//signup
 
         await userModel.create({
             email: email, 
-            password: password, 
+            password: hashedPassword, 
             firstName: firstName, 
             lastName: lastName
         })
@@ -47,20 +49,48 @@ userRouter.post("/signup", async(req, res)=>{//signup
             message:"Signup succeeded"
         })
     }catch(e){
-        console.log("Error during signup; ", e)
+        console.error("Error during signup; ", e)
 
         res.status(500).json({
             message:"An error occured during signup", 
-            error: error.message
+            error: e.message,
+            
         })
     }
     
 })
 
-userRouter.post("/signin", (req, res)=>{//signin
-    res.json({
-        message:"You're signed in"
+userRouter.post("/signin", async(req, res)=>{//signin
+    const {email, password}= req.body
+
+    const user= await userModel.findOne({
+        email: email
     })
+    if(!user){
+        res.status(403).json({
+            message: "User is not found"
+        })
+        return
+    }
+
+    const passwordMatch= await bcrypt.compare(password, user.password)
+    //try cookie based authentication in future
+    if(passwordMatch){
+        const token= jwt.sign({
+            id:user._id
+
+        }, JWT_USER_PASSWORD)
+        res.json({
+            message:"Signin successful",
+            token:token
+        })
+    }
+    else{
+        res.status(403).json({
+            message:"Incorrect credentials"
+        })
+    }
+
 })
 
 userRouter.get("/purchases", (req, res)=>{//user purchased courses

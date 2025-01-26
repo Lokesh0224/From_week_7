@@ -1,5 +1,5 @@
 const mongoose= require("mongoose")
-mongoose.connect("mongodb+srv://Lokesh0224:76MOX404UFEMMw0P@cluster0.kjsdz.mongodb.net/")
+mongoose.connect("mongodb+srv://Lokesh0224:76MOX404UFEMMw0P@cluster0.kjsdz.mongodb.net/test5")
 const Schema = mongoose.Schema
 const ObjectId = mongoose.Types.ObjectId
 
