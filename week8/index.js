@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken")
 
 
 const app = express()
+app.use(express.json())
 
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/admin", adminRouter)
@@ -16,7 +17,7 @@ app.use("/api/v1/course", courseRouter)
 
 
 async function main(){
-    await mongoose.connect("mongodb+srv://Lokesh0224:76MOX404UFEMMw0P@cluster0.kjsdz.mongodb.net/coursera-app")
+    await mongoose.connect("mongodb+srv://Lokesh0224:76MOX404UFEMMw0P@cluster0.kjsdz.mongodb.net/")
 //study dotenv
     app.listen(3000, ()=>(
         console.log("Port is in localhost 3000")

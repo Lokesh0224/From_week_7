@@ -1,5 +1,5 @@
 const mongoose= require("mongoose")
-mongoose.connect("mongodb+srv://Lokesh0224:76MOX404UFEMMw0P@cluster0.kjsdz.mongodb.net/coursera-app")
+mongoose.connect("mongodb+srv://Lokesh0224:76MOX404UFEMMw0P@cluster0.kjsdz.mongodb.net/")
 const Schema = mongoose.Schema
 const ObjectId = mongoose.Types.ObjectId
 
@@ -30,12 +30,12 @@ const purchaseSchema = new Schema({
     courseId: ObjectId
 })
 
-const userModel= mongoose.model("user", userSchema)
+const userModel= mongoose.model("user", userSchema) //the details in the userSchema will get stored in the db collection named user
 const adminModel= mongoose.model("admin", adminSchema)
 const courseModel= mongoose.model("course", courseSchema)
 const purchaseModel= mongoose.model("purchase", purchaseSchema)
 
-module.export= {
+module.exports= {
     userModel, 
     adminModel, 
     courseModel, 
