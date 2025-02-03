@@ -12,24 +12,17 @@ app.use(express.json());
 
 app.post("/signup", async (req, res)=>{//we're using async await because the database have to insert the userdetails to the server which somewhere in the world, so it may happen or may not happen 
     //input validation &  npm install zod
-    //you have to describe schema in the zod object
-    //like this 
-    //req.body{
-    //     email:string, 
-    //     password: string, 
-    //     name:string
-    // }
 
+    //zod object declaring, for ex: email should in this format then password shoud be like this etc..
     const requireBody= z.object({
         email: z.string().min(6).max(100).email(),
         password: z.string().min(6).max(100), 
         name: z.string().min(6).max(30)
     })
+    //after the user input it will reach the mi
 
     //const parsedData=requireBody.parse(req.body) , but parse will throw an error
-    const parsedDataWithSuccess= requireBody.safeParse(req.body)//the safeParse wont throw you an error  
-
-    
+    const parsedDataWithSuccess= requireBody.safeParse(req.body)//so the req.body will take the input and then the safeparse will compare the user input with the zod object  
 
     if(!parsedDataWithSuccess.success){
         res.json({
