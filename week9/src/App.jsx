@@ -1,20 +1,32 @@
-import {useState} from "react"
+import { useEffect , useState} from "react"
 
 const App= ()=>{
-  const[count, setCount]= useState(0)
+  const[count, setCount]= useState(1)
 
   const increaseCount= ()=>{
-    setCount(count+1)
+    // setCount(count+1)
+    //instead of using the above line we have to do it like this to make the code work as expected
+    // setCount(function(currentValue){
+    //   return currentValue+1;
+    // })
+    //instead of using the above line we can do like this
+    setCount(currentValue => currentValue+1)
   }
 
-  return <div>
-    <div style= {{display: "flex"}}>
-      <div style={{background: "red", borderRadius: 20, width: 20, height: 25, paddingLeft: 10, paddingTop: 5}}>
-        {count}
-      </div>
-    </div>
-    <img style= {{cursor: "pointer"}} src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxkeSc5BKFbXzaMFthFG0BYqMWL8fPeLRpZw&s"} width={40}/>
-    <button onClick= {increaseCount}>Increase the count</button>
+  useEffect(function(){
+    console.log("above setInterval")
+    const intervalId=setInterval(increaseCount, 1000)
+
+    return () =>{
+      clearInterval(intervalId)
+    }
+  
+ 
+  }, [])//setInterval() is a JavaScript function that repeatedly executes a given function or code block at specified intervals (in milliseconds) until it is stopped. Syntax : setInterval(function, delay);
+
+  
+  return <div> 
+    {count}
   </div>
 
  

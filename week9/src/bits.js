@@ -33,7 +33,7 @@
 // export default App
 
 
-//****** if you want to update the see the linked in posts get updated paste the blow in app.jsx, when you click the button Add post it will add the post in your so called linked in
+//************ if you want to update and see the linked in posts get updated paste the blow in app.jsx, when you click the button Add post it will add the post in your so called linked in
 
 // import {PostComponent} from "./Post"
 // import {useState} from "react"
@@ -97,6 +97,44 @@
 //     </div>
 //     <img style= {{cursor: "pointer"}} src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxkeSc5BKFbXzaMFthFG0BYqMWL8fPeLRpZw&s"} width={40}/>
 //     <button onClick= {increaseCount}>Increase the count</button>
+//   </div>
+
+ 
+// }
+
+// export default App
+
+
+//******** useEffect ( a timer like thingy)
+// import { useEffect , useState} from "react"
+
+// const App= ()=>{
+//   const[count, setCount]= useState(1)
+
+//   const increaseCount= ()=>{
+//     // setCount(count+1)
+//     //instead of using the above line we have to do it like this to make the code work as expected
+//     // setCount(function(currentValue){
+//     //   return currentValue+1;
+//     // })
+//     //instead of using the above line we can do like this
+//     setCount(currentValue => currentValue+1)
+//   }
+
+//   useEffect(function(){
+//     console.log("above setInterval")
+//     const intervalId=setInterval(increaseCount, 1000)
+
+//     return () =>{
+//       clearInterval(intervalId)
+//     }
+  
+ 
+//   }, [])//setInterval() is a JavaScript function that repeatedly executes a given function or code block at specified intervals (in milliseconds) until it is stopped. Syntax : setInterval(function, delay);
+
+  
+//   return <div> 
+//     {count}
 //   </div>
 
  
