@@ -1,31 +1,23 @@
-import React, { useState } from 'react';
+import {useState} from "react"
 
-function App() {
-  
-  return (
-    <div style= {{ background: "#dfe6e9", height: "100vh", }}>
-      <ToggleMessage/>
-      <ToggleMessage/>
-      <ToggleMessage/>
-      </div>  
-      //hot module replacement means whatever the changes you're doing in the file that will be autmatically reflected on the website, you don't have to restart the server everytime.This is what the vite gives you
-  )
-}
-//in react the variable that you're defining, define it as a state variable 
-const ToggleMessage = ()=>{
-  let [notificationCount, setNotificationCount] = useState (0); // useState is a React hook that returns an array with the current state value and a function to update it, initialized with a given value.
+const App= ()=>{
+  const[count, setCount]= useState(0)
 
-  function increment(){
-    setNotificationCount(notificationCount+ 1)
+  const increaseCount= ()=>{
+    setCount(count+1)
   }
 
-  return( <div>
-    <button onClick={increment}>
-     Increase Count
-    </button>
-    {notificationCount }
+  return <div>
+    <div style= {{display: "flex"}}>
+      <div style={{background: "red", borderRadius: 20, width: 20, height: 25, paddingLeft: 10, paddingTop: 5}}>
+        {count}
+      </div>
+    </div>
+    <img style= {{cursor: "pointer"}} src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxkeSc5BKFbXzaMFthFG0BYqMWL8fPeLRpZw&s"} width={40}/>
+    <button onClick= {increaseCount}>Increase the count</button>
   </div>
-  )
 
+ 
 }
+
 export default App
