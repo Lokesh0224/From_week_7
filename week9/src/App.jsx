@@ -1,35 +1,42 @@
-import { useEffect , useState} from "react"
+import react, {useState, useEffect} from "react"
 
 const App= ()=>{
-  const[count, setCount]= useState(1)
 
-  const increaseCount= ()=>{
-    // setCount(count+1)
-    //instead of using the above line we have to do it like this to make the code work as expected
-    // setCount(function(currentValue){
-    //   return currentValue+1;
-    // })
-    //instead of using the above line we can do like this
-    setCount(currentValue => currentValue+1)
-  }
+const [currentTab, setCurrentTab]= useState(1)
+const [tabData, setTabData]= useState({})
+const [loading, setLoading] = useState(true)
 
-  useEffect(function(){
-    console.log("above setInterval")
-    const intervalId=setInterval(increaseCount, 1000)
-
-    return () =>{
-      clearInterval(intervalId)
-    }
+useEffect(()=>{
   
+  fetch("https://jsonplaceholder.typicode.com/todos/"+ currentTab)
+  .then(async res =>{
+    const json=await res.json();
+    setTabData(json);
+    setLoading(false);
+  })
+}, [currentTab])//this effect(fn(fetch)) runs whenever this dependency[currentTab] array changes
+
+return <div>
+
+  <button onClick ={()=>{setCurrentTab(1)}} 
+  style={{color: currentTab == 1? "red": "black" }}>Todo #1</button>
+
+
+  <button onClick ={()=>{setCurrentTab(2)}} 
+  style={{color: currentTab == 2? "red": "black" }} >Todo #2</button>
+
+
+  <button onClick ={()=>{setCurrentTab(3)}} 
+  style={{color: currentTab == 3? "red": "black" }}>Todo #3</button>
+
+
+  <button onClick ={()=>{setCurrentTab(4)}} 
+  style={{color: currentTab == 4? "red": "black" }}>Todo #4</button>
+<br/>
+  {loading?"loading...":  tabData.title}
  
-  }, [])//setInterval() is a JavaScript function that repeatedly executes a given function or code block at specified intervals (in milliseconds) until it is stopped. Syntax : setInterval(function, delay);
-
-  
-  return <div> 
-    {count}
-  </div>
-
+</div>
  
 }
-
-export default App
+ 
+export default App  
