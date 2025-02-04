@@ -1,29 +1,30 @@
+import React from "react"
 
 function App() {
  
-  const todos=[{
-    key:1, 
-    title: "Go to gym", 
-    done: false
-  }, {
-    key:2,
-    title: "Eat food", 
-    done: true
-  }]
-  
-  const todosComponents = todos.map(todo=><Todo key={todo.key} title= {todo.title} done={todo.done}/>)
   return (
     <div>
-{todosComponents}
+      <MyComponent/>    
     </div>
   )
 }
 
-function Todo({title, done}){
-  return <div>
-    {title}-{done?"Done!":"Not done!"}
-  </div>
-}
 
-export default App
+// function MyComponent(){
+//   return <div style={{backgroundColor: 'blue', color: "white"}}>
+//     Hello, World!
+//   </div>
+// }
  
+//or the below
+
+ const componentStyles= {backgroundColor: 'red' , color: 'white', padding: 10,borderRadius: 20}
+//compnentStyles is an object that is passed into the style in the div
+ function MyComponent(){
+  return (
+  <div style={componentStyles}>
+    Hello, World!
+    </div>)
+ }
+
+ export default App
