@@ -1,23 +1,43 @@
-import {BrowserRouter, Routes, Route, Link} from "react-router-dom"
+import {BrowserRouter, Routes, Route, Link, useNavigate, Outlet} from "react-router-dom"
 import './App.css'
 
 function App() {
 
   return (
-    <>
+    <div>
     
     <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Layout/>}> 
+        <Route path="/neet/online-coaching-class-11" element= {<Class11Program/>} />
+        <Route path="/neet/online-coaching-class-12" element= {<Class12Program/>} />
+        <Route path="/" element= {<Landing/>} />
+        <Route path="*" element= {<ErrorPage/>} />
+      </Route>
+    </Routes>
+    </BrowserRouter>
+    </div>
+  ) 
+}
+// this * route is used when the user goes to the route which doesnt exist
+
+function Layout(){
+  return(
+  <div style={{height:"100vh"}}>
+    HEADER<br/>
     <Link to="/">Allen</Link > |   
     <Link  to="/neet/online-coaching-class-11">Class-11</Link > |
     <Link  to="/neet/online-coaching-class-12">Class-12</Link ><br/>
-    <Routes>
-      <Route path="/neet/online-coaching-class-11" element= {<Class11Program/>} />
-      <Route path="/neet/online-coaching-class-12" element= {<Class12Program/>} />
-      <Route path="/" element= {<Landing/>} />
-    </Routes>
-    </BrowserRouter>
-    </>
-  ) 
+    <Outlet/>
+  FOOTER
+  </div>
+  )
+
+}
+function ErrorPage(){
+  return <>
+  Sorry page not found
+  </>
 }
 
 function Landing(){
@@ -33,8 +53,17 @@ function Class11Program(){
 }
 
 function Class12Program(){
+  const navigate= useNavigate()
+  /* useNaviagate is a custom hook which is used to 
+    navigate to the route you provide */ 
+
+  const redirectUser=()=>{
+    navigate("/")
+  }
+
   return <>
-  Welcome to the class 12 page!!!
+  Welcome to the class 12 page!!!<br/>
+  <button onClick={redirectUser}>Go back to the landing page</button>
   </>
 }
 
