@@ -1,30 +1,35 @@
 import React from "react"
 
 function App() {
- 
   return (
     <div>
-      <MyComponent/>    
+      <ClassCounter/>
     </div>
   )
 }
 
 
-// function MyComponent(){
-//   return <div style={{backgroundColor: 'blue', color: "white"}}>
-//     Hello, World!
-//   </div>
-// }
- 
-//or the below
+function MyComponent(){
+  const [count, setCount]= useState(0)
 
- const componentStyles= {backgroundColor: 'red' , color: 'white', padding: 10,borderRadius: 20}
-//compnentStyles is an object that is passed into the style in the div
- function MyComponent(){
-  return (
-  <div style={componentStyles}>
-    Hello, World!
-    </div>)
- }
+  useEffect(()=>{
+    console.log('Component mounted or count updated ');
+
+  }, [count])
+
+  useEffect(()=>{
+    console.log('component mounted')
+    return ()=>{
+      console.log('Component will unmount')
+      
+    }
+  }, [])
+  return(
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() =>setCount(count+1)}></button>
+    </div>
+  )
+}
 
  export default App
