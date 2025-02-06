@@ -7,6 +7,7 @@ function App() {
     <div>
     
     <BrowserRouter>
+    
     <Routes>
       <Route path="/" element={<Layout/>}> 
         <Route path="/neet/online-coaching-class-11" element= {<Class11Program/>} />
@@ -21,14 +22,21 @@ function App() {
 }
 // this * route is used when the user goes to the route which doesnt exist
 
-function Layout(){
-  return(
-  <div style={{height:"100vh"}}>
-    HEADER<br/>
-    <Link to="/">Allen</Link > |   
+function Header(){
+  return (
+    <div>
+      <Link to="/">Allen</Link > |   
     <Link  to="/neet/online-coaching-class-11">Class-11</Link > |
     <Link  to="/neet/online-coaching-class-12">Class-12</Link ><br/>
+    </div>
+  )
+}
+function Layout(){
+  return(<div style={{height:"100vh", background: "green"}}>
+    <Header/>
+    <div style={{height:"90vh", background: "red"}}>
     <Outlet/>
+    </div>
   FOOTER
   </div>
   )
