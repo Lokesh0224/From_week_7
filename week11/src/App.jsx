@@ -1,23 +1,21 @@
-import {useState, useEffect} from 'react'
-import { usePostTitle, useFetch } from './hooks/useFetch'
-function App() {
-  const [currentPost, setCurrentPost]= useState(1)
-  const {finalData, loading}= useFetch("https://jsonplaceholder.typicode.com/posts/"+currentPost)
+import {useState} from 'react'
+import { usePrev } from './hooks/usePrev'
 
-  if(loading){
-    return <div>
-      Loading....
-    </div>
-  }
-  return (
+function App(){
+  const [state, setState] = useState(0)
+  const prev= usePrev(state)
+
+  return(
     <div>
-      <button onClick={()=>{setCurrentPost(1)}}>1</button>
-      <button onClick={()=>{setCurrentPost(2)}}>2</button>
-      <button onClick={()=>{setCurrentPost(3)}}>3</button>
-      {JSON.stringify(finalData)}
+      <p>{state}</p>
+      <button onClick={()=>{
+        setState((curr)=>curr+1)
+      }}>Click</button>
+      <p>the previous value is {prev}</p>
     </div>
   )
 }
 
+export default App;
 
-export default App
+
