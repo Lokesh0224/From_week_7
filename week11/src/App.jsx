@@ -1,27 +1,23 @@
-import {useState} from 'react'
-
-//Custom hook= a function which starts with "use" uses another hook and returns some value which changes based on the inside hook
-function useCounter(){
-  const [count, setCount]= useState(0)
-
-  function increaseCount(){
-    setCount(count+1)
-    //or we can use setCount(c=>c+1)
-  }
-  return {
-    count: count, 
-    increaseCount:increaseCount
-  }
-
-}
-
-
+import {useState, useEffect} from 'react'
+import { usePostTitle, useFetch } from './hooks/useFetch'
 function App() {
-  const {count, increaseCount}= useCounter()
+  const [currentPost, setCurrentPost]= useState(1)
+  const {finalData, loading}= useFetch("https://jsonplaceholder.typicode.com/posts/"+currentPost)
 
-  return <div>
-    <button onClick={increaseCount}>Increase Count: {count}</button>
-  </div>
+  if(loading){
+    return <div>
+      Loading....
+    </div>
+  }
+  return (
+    <div>
+      <button onClick={()=>{setCurrentPost(1)}}>1</button>
+      <button onClick={()=>{setCurrentPost(2)}}>2</button>
+      <button onClick={()=>{setCurrentPost(3)}}>3</button>
+      {JSON.stringify(finalData)}
+    </div>
+  )
 }
+
 
 export default App
