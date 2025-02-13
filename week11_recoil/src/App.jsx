@@ -1,14 +1,9 @@
-//Atom: When an atom's state changes, all components that subscribe to that atom will re-render
-//by using recoil we have made our application more optimal
 
-import {useState} from 'react'
+import {useState, useEffect, memo} from 'react'
 import {RecoilRoot, useRecoilValue, useSetRecoilState} from 'recoil'
-//1)npm install recoil
-//2)import {RecoilRoot} from 'recoil'
-//You have to wrap your application inside your RecoilRoot
-import {counterAtom } from './store/atom/counter'
 
 
+//memo= only changing if the prop change
 function App(){
   return (
     <RecoilRoot>
@@ -18,25 +13,27 @@ function App(){
 }
 
 function Counter(){
-  
+  const [count, setCount]= useState(0)
+
+  useEffect(()=>{
+    setInterval(()=>{
+      setCount(c=>c+1)
+    }, 3000)
+  }, [])
+  //down instead of CurrentCount component im writing MemoizedCurrentCount because it will not re-render unless a prop changes or a state changes
   return <div>
-    <CurrentCount/>
-    <Increase/>
+    <MemoizedCurrentCount/>
+    <MemoizedIncrease/>
     <Decrease/>
   </div>
 }
 
+const MemoizedCurrentCount= memo(CurrentCount)
 
-
-//step2: is to define the atom that we have did in a file named called counter
-//step3: useRecoilValue of counterAtom
 function CurrentCount(){
   try{
-    const count= useRecoilValue(counterAtom)//now you're using the counter which is defined in counter.js
-    if(count===undefined){
-      return <div>Loading...</div>
-    }
-    return <div>{count}</div>
+   
+    return <div>1</div>
   }
   catch(error){
     console.error("Error in CurrentCount", error)
@@ -44,20 +41,20 @@ function CurrentCount(){
   }
 }
 
+const MemoizedIncrease= memo(Increase)
 function Increase(){
 
-  const setCount= useSetRecoilState(counterAtom)
   return <div>
-    <button onClick={()=>setCount(c=>c+1)}>Increase</button>
+    <button onClick>Increase</button>
   </div>
 }
 
-function Decrease(){
-  const setCount= useSetRecoilState(counterAtom)
+
+const Decrease= memo(function(){
   return <div>
-    <button onClick={()=>setCount(c=>c-1)}>Decrease</button>
+    <button onClick>Decrease</button>
   </div>
-}
+})
 
 
 export default App
